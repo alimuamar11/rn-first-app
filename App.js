@@ -6,7 +6,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>{outputText}</Text>
-      <Button title="change text" onPress={() => setOutputText('Tulsan telah berubah') }/>
+      <Button title="change text" onPress={() => setOutputText('Tulsan telah diperbarui') }/>
     </View>
   );
 }
