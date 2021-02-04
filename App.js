@@ -1,6 +1,5 @@
-import { enableExpoCliLogging } from 'expo/build/logs/Logs';
 import React, { useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native';
 
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState ('');
@@ -12,7 +11,7 @@ export default function App() {
 
   const addGoalHandler = () => {
     // console.log(enteredGoal); cek
-    setCourseGoals(currentGoals => [...currentGoals, enteredGoal]);
+    setCourseGoals(currentGoals => [...currentGoals, {id: Math.random().toString(), value: enteredGoal}]);
   };
 
   return (
@@ -22,18 +21,25 @@ export default function App() {
         value={enteredGoal}/>
         <Button title="ADD" onPress={addGoalHandler} />
       </View>
-      <View styles={styles.output}>
-        {courseGoals.map((goal) => <Text key={goal}>{goal}</Text>)}
-      </View>
+      <FlatList 
+        keyExtractor={(item, index) => item.id}
+        data={courseGoals} 
+        renderItem={itemData => (
+          <View style={styles.output}>
+            <Text>{itemData.item.value}</Text>
+          </View>
+          )}
+      />
+      
     </View>
   );
 }
 const styles = StyleSheet.create({
   screen: {
-    padding: 10
+    padding: 20
   },
   inputContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
@@ -41,9 +47,12 @@ const styles = StyleSheet.create({
     width: '80%',
     borderColor: 'black',
     borderWidth: 1,
-    padding: 10
   },
   output: {
+    width: '90%',
+    margin: 5,
+    backgroundColor: '#ccc',
+    borderColor: 'black',
     padding: 10
   }
 
