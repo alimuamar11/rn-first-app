@@ -1,59 +1,36 @@
 import React, { useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
+
+import GoalItem from "./components/GoalItem";
+import GoalInput from "./components/GoalInput";
 
 export default function App() {
-  const [enteredGoal, setEnteredGoal] = useState ('');
   const [courseGoals, setCourseGoals] = useState ([]);
 
-  const goalInputHandler = (enteredText) =>{
-    setEnteredGoal(enteredText);
-  };
 
-  const addGoalHandler = () => {
+  const addGoalHandler = goalTittle => {
     // console.log(enteredGoal); cek
-    setCourseGoals(currentGoals => [...currentGoals, {id: Math.random().toString(), value: enteredGoal}]);
+    setCourseGoals(currentGoals => [...currentGoals, {id: Math.random().toString(), value: goalTittle}]);
   };
 
   return (
     <View style={styles.screen}>
-      <View style={styles.inputContainer}>
-        <TextInput placeholder= "Course Goal" style={styles.input} onChangeText={goalInputHandler}
-        value={enteredGoal}/>
-        <Button title="ADD" onPress={addGoalHandler} />
-      </View>
+      <GoalInput onAddGoal={addGoalHandler}/>
       <FlatList 
         keyExtractor={(item, index) => item.id}
         data={courseGoals} 
-        renderItem={itemData => (
-          <View style={styles.output}>
-            <Text>{itemData.item.value}</Text>
-          </View>
-          )}
-      />
+        renderItem={
+          itemData => 
+          <GoalItem onDelete={() => console.log('Apakah ini berhasil?')} title={itemData.item.value} />
+        }/>
       
     </View>
   );
 }
 const styles = StyleSheet.create({
   screen: {
-    padding: 20
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  input: {
-    width: '80%',
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-  output: {
-    width: '90%',
-    margin: 5,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    padding: 10
+    padding: 10,
+    marginTop: 40
   }
 
 });
